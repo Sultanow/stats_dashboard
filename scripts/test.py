@@ -39,22 +39,14 @@ fig = go.Figure()
 for i in range(0, num_series):
     fig.add_trace(go.Scatter(x=x_data[i], y=y_data[i], mode='lines',
         name=labels[i],
-        line=dict(width=1),
+        line=dict(width=2),
         connectgaps=True,
-    ))
-
-    # endpoints
-    fig.add_trace(go.Scatter(
-        x=[x_data[i][0], x_data[i][-1]],
-        y=[y_data[i][0], y_data[i][-1]],
-        mode='markers',
-        marker=dict(size=1)
     ))
 
 fig.update_layout(
     xaxis=dict(
         showline=True,
-        showgrid=False,
+        showgrid=True,
         showticklabels=True,
         linewidth=2,
         ticks='outside',
@@ -64,37 +56,22 @@ fig.update_layout(
         ),
     ),
     yaxis=dict(
-        showgrid=False,
-        zeroline=False,
-        showline=False,
-        showticklabels=False,
+        showgrid=True,
+        zeroline=True,
+        showline=True,
+        showticklabels=True,
     ),
-    autosize=False,
+    autosize=True,
     margin=dict(
-        autoexpand=False,
+        autoexpand=True,
         l=100,
         r=20,
         t=110,
     ),
-    showlegend=False,
-    plot_bgcolor='white'
+    showlegend=True
 )
 
-annotations = []
-
-# Add labels
-for y_trace, label in zip(y_data, labels):
-    # Title
-    annotations.append(dict(xref='paper', yref='paper', x=0.0, y=1.05,
-                              xanchor='left', yanchor='bottom',
-                              text=title,
-                              font=dict(family='Arial',
-                                        size=30),
-                              showarrow=False))
-
-fig.update_layout(annotations=annotations)
+#annotations = []
+#fig.update_layout(annotations=annotations)
 plotly.offline.plot(fig, filename='../output/lineplot')
 #fig.show()
-
-
-# %%
