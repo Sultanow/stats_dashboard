@@ -1,12 +1,19 @@
 const express = require("express");
 const fs = require('fs');
 const path=require("path")
+const cors=require("cors");
 const spawn = require("child_process").spawn;
 
 const app = express();
 const files = [];
 const dataFolder = "../data/"
 const outputFolder = "./output/"
+const corsOptions = {
+    origin: "http://localhost:4200",
+    optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
 
 app.listen(8000, () => {
     console.log("Server Started!");
@@ -14,6 +21,10 @@ app.listen(8000, () => {
         files.push(file);
     });
 })
+
+app.route("/api/files").get((req, res) => {
+    res.send(files);
+});
 
 app.route("/api/:file").post((req, res) => {
     const newfile= req.params["file"];

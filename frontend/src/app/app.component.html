@@ -1,0 +1,19 @@
+<div>
+  <h2>Select Excel Data</h2>
+  <div>
+    <select (change)="selectOption($event.target.value)" [(ngModel)]="selectedOption">
+      <option *ngFor="let file of availableFiles" [value]="file">
+          {{ file }}
+        </option>
+    </select>
+    <div *ngIf="!pendingResult">
+      <button (click)= "selectFile()">Purchase</button>
+    </div>
+    <div *ngIf="pendingResult">
+      <h4>Generating Graphs...</h4>
+    </div>
+  </div>
+  <div *ngIf="resultAvailable">
+    <h5>{{resultAvailable}}</h5>
+  </div>
+</div>
