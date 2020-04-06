@@ -1,4 +1,6 @@
 #%%
+
+import sys
 import pandas as pd
 import numpy as np
 import plotly
@@ -6,16 +8,21 @@ import plotly.graph_objs as go
 import plotly.figure_factory as ff
 from plotly.offline import init_notebook_mode
 
+
+excel_data = sys.argv[1]
+plot_name = '.'.join(excel_data.split('.')[:-1])
+plot_table = plot_name + "-table"
+plot_line = plot_name + "-lineplot"
 plotly.offline.init_notebook_mode(connected=True)
 
 #%%
 # load the data
-df = pd.read_excel("../data/anwender_pro_stunde_nach_20.01.00.xlsx", header=1, usecols="A:I", skiprows=0, nrows=19)
+df = pd.read_excel("../data/"+excel_data, header=1, usecols="A:I", skiprows=0, nrows=19)
 df_table = ff.create_table(df.head(19))
 
 #%%
 #plot the table
-plotly.offline.plot(df_table, filename='../output/table')
+plotly.offline.plot(df_table, filename='./output/'+plot_table)
 
 #%%
 #plot the graph
@@ -73,5 +80,9 @@ fig.update_layout(
 
 #annotations = []
 #fig.update_layout(annotations=annotations)
-plotly.offline.plot(fig, filename='../output/lineplot')
+
+plotly.offline.plot(fig, filename='./output/'+ plot_line)
 #fig.show()
+
+print(plot_table+','+plot_line)
+sys.stdout.flush()
