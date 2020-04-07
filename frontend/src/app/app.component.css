@@ -1,0 +1,30 @@
+.title-center {
+    margin: 0 auto;
+  }
+.center-card {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin: auto;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.center-text {
+    text-align: center;
+}
+
+.center-select {
+    width: 20rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+}
+
+.button {
+    font-size: 20px;
+    float: right;
+}
+.graph-card{
+    padding-bottom: 1%;
+    padding-top: 1%;
+}

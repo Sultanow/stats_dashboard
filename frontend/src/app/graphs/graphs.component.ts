@@ -18,7 +18,8 @@ export class GraphsComponent implements OnInit {
 
   basicChart() {
     const element = this.Graph.nativeElement;
-    const data = JSON.parse(this.graphData)["traces"]
+    const data = JSON.parse(this.graphData)
+    const graphData = data["traces"]
     const layout = {
       xaxis: {
         showline: true,
@@ -44,9 +45,10 @@ export class GraphsComponent implements OnInit {
           r:20,
           t:110,
       },
-      showlegend: true
+      showlegend: true,
+      title: data["title"]
       }
-      Plotly.newPlot(element, data, layout);
+      Plotly.newPlot(element, graphData, layout);
   }
 
   ngOnInit() { this.basicChart();console.log("Created chart")}

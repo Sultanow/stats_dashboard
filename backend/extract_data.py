@@ -5,7 +5,15 @@ import numpy as np
 import math
 
 excel_data = sys.argv[1]
-df = pd.read_excel("../data/"+excel_data, header=1, usecols="A:I", skiprows=0, nrows=19)
+config = None
+with open("../data/data_configuration.json", "r") as readfile:
+    configfile = json.loads(readfile.read())
+    if excel_data not in configfile.keys():
+        config = configfile["default"]
+    else:
+        config = configfile[excel_data]
+
+df = pd.read_excel("../data/"+excel_data, header=1, usecols=config["columns"], skiprows=0, nrows=config["rows"])
 
 labels = df.columns.astype(str).to_list()
 labels = labels[1:]

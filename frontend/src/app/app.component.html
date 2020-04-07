@@ -1,20 +1,33 @@
+<mat-toolbar color="primary">
+  <span class="title-center">Anwenderzahlen</span>
+</mat-toolbar>
 <div>
-  <h2>Select Excel Data</h2>
-  <div>
-    <select (change)="selectOption($event.target.value)" [(ngModel)]="selectedOption">
-      <option *ngFor="let file of availableFiles" [value]="file">
-          {{ file }}
-        </option>
-    </select>
-    <div *ngIf="!pendingResult">
-      <button (click)= "selectFile()">Generate</button>
-    </div>
-    <div *ngIf="pendingResult">
-      <h4>Generating Graphs...</h4>
-    </div>
-  </div>
-  <div *ngIf="resultAvailable">
+  
+  <div *ngIf="resultAvailable" class="graph-card">
+    <mat-card >
     <app-graphs [graphData]= resultAvailable></app-graphs>
+    </mat-card>
   </div>
+  
+  <mat-card class="center-card">
+  <mat-card-content>
+    <mat-form-field class= "center-select">
+      <mat-label class="title-center">Excel Datei Auswählen</mat-label>
+      <mat-select select (change)="selectOption($event.target.value)" [(ngModel)]="selectedOption">
+        <mat-option *ngFor="let file of availableFiles" [value]="file">
+          {{ file }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
+  <div>
+    <div *ngIf="!pendingResult&&selectedOption">
+      <button class= "button" mat-raised-button (click)= "selectFile()" color="primary">Daten Holen</button>
+    </div>
+    <div *ngIf="pendingResult" class="center-card">
+      <mat-spinner></mat-spinner>
+    </div>
+  </div>
+</mat-card-content>
+</mat-card>
 </div>

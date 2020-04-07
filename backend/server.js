@@ -18,7 +18,9 @@ app.use(cors(corsOptions));
 app.listen(8000, () => {
     console.log("Server Started!");
     fs.readdirSync(dataFolder).forEach(file => {
-        files.push(file);
+        if (!file.endsWith("json")){
+            files.push(file);
+        }
     });
 })
 
