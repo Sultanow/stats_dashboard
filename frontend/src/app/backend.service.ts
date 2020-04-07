@@ -13,15 +13,7 @@ export class BackendService {
     return this.http.get<string[]>('http://localhost:8000/api/files');
   }
 
-  generateGraph(filename: string): Observable<void> {
-    return this.http.post<void>("http://localhost:8000/api/"+filename, null);
-  }
-
-  getTable(filename: string): Observable<HTMLDocument> {
-    return this.http.get<HTMLDocument>("http://localhost:8000/api/"+filename+"/table");
-  }
-
-  getLinePlot(filename: string): Observable<HTMLDocument> {
-    return this.http.get<HTMLDocument>("http://localhost:8000/api/"+filename+"/lineplot");
+  getGraphData(filename: string): Observable<string> {
+    return this.http.get<string>("http://localhost:8000/api/"+filename);
   }
 }

@@ -7,13 +7,14 @@
         </option>
     </select>
     <div *ngIf="!pendingResult">
-      <button (click)= "selectFile()">Purchase</button>
+      <button (click)= "selectFile()">Generate</button>
     </div>
     <div *ngIf="pendingResult">
       <h4>Generating Graphs...</h4>
     </div>
   </div>
   <div *ngIf="resultAvailable">
-    <h5>{{resultAvailable}}</h5>
+    <app-graphs [graphData]= resultAvailable></app-graphs>
   </div>
+
 </div>

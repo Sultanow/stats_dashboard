@@ -28,13 +28,12 @@ export class AppComponent implements OnInit {
       console.log("submitting...")
 
       this.backend
-    .generateGraph(this.selectedOption).subscribe(result=> {
+    .getGraphData(this.selectedOption).subscribe(result=> {
       this.resultAvailable = JSON.stringify(result);
       this.pendingResult = false;
       
     });
     }
-    
     
   }
 
