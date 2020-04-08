@@ -16,4 +16,18 @@ export class BackendService {
   getGraphData(filename: string): Observable<string> {
     return this.http.get<string>("http://localhost:8000/api/"+filename);
   }
+
+  getConfig(): Observable<string> {
+    return this.http.get<string>("http://localhost:8000/api/bindings");
+  }
+
+  newConfig(identifier: string, excel: string, py: string): Observable<string> {
+    const url= "http://localhost:8000/api/bindings/"+identifier+"?excel="+excel+"&py="+py;
+    console.log("submitting: ", url);
+    return this.http.post<string>(url, null);
+  }
+
+  deleteConfig(identifier:string): Observable<string> {
+    return this.http.delete<string>("http://localhost:8000/api/bindings/"+identifier);
+  }
 }

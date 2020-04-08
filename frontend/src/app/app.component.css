@@ -12,6 +12,10 @@
 }
 .center-text {
     text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    font-size: 24;
 }
 
 .center-select {
@@ -27,4 +31,21 @@
 .graph-card{
     padding-bottom: 1%;
     padding-top: 1%;
+}
+
+.options{
+    padding: 1%;
+    width: 50%;
+    margin: 0 auto;
+}
+
+table {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+.entry-container {
+    padding: 2%;
+    width: 50%;
+    margin: 0 auto;
 }

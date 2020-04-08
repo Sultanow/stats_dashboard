@@ -5,9 +5,8 @@ const cors=require("cors");
 const spawn = require("child_process").spawn;
 
 const app = express();
-const files = [];
-const dataFolder = "../data/"
-const outputFolder = "./output/"
+
+const dataFolder = "./data/"
 const corsOptions = {
     origin: "http://localhost:4200",
     optionsSuccessStatus: 200
@@ -17,23 +16,64 @@ app.use(cors(corsOptions));
 
 app.listen(8000, () => {
     console.log("Server Started!");
+})
+
+app.route("/api/files").get((req, res) => {
+    const files = [];
     fs.readdirSync(dataFolder).forEach(file => {
         if (!file.endsWith("json")){
             files.push(file);
         }
     });
-})
-
-app.route("/api/files").get((req, res) => {
     res.send(files);
 });
+
+app.route("/api/bindings").get((req, res) => {
+    const obj = JSON.parse(fs.readFileSync("data_configuration.json", 'utf8'));
+    const returnList = []
+    for (k of Object.keys(obj)){
+        returnList.push({"id": k, "excel": obj[k]["excel"], "py": obj[k]["py"], "actions": "delete"});
+    }
+    res.send(returnList);
+})
+
+app.route("/api/bindings/:id").post((req, res) => {
+    const id = req.params["id"]
+    const excel = req.query.excel;
+    const py = req.query.py;
+    console.log(id,excel,py)
+    const obj = JSON.parse(fs.readFileSync("data_configuration.json", 'utf8'));
+    obj[id] = {};
+    obj[id]["excel"] = excel;
+    obj[id]["py"] = py;
+    fs.writeFileSync("data_configuration.json", JSON.stringify(obj));
+    res.send({status: "success"});
+})
+
+app.route("/api/bindings/:id").delete((req, res) => {
+    const id = req.params["id"]
+    const obj = JSON.parse(fs.readFileSync("data_configuration.json", 'utf8'));
+    delete obj[id];
+    fs.writeFileSync("data_configuration.json", JSON.stringify(obj));
+    res.send({status:"success"});
+})
 
 app.route("/api/:file").get((req, res) => {
     const newfile= req.params["file"];
     const srcFileExists = checkExists(dataFolder, newfile, null)
-    //const resultExists = checkExists(outputFolder, cleanName(newfile), null)
-    if (srcFileExists){
-        const pythonProcess = spawn('python',["./extract_data.py", newfile]);
+    const obj = JSON.parse(fs.readFileSync("data_configuration.json", 'utf8'));
+    let referencePY = "";
+    for (o of Object.keys(obj)) {
+        if (obj[o]["excel"] == newfile) {
+            referencePY = obj[o]["py"];
+            break;
+        }
+    }
+    console.log("this is a ref", referencePY, srcFileExists, newfile)
+    if (srcFileExists && referencePY){
+        const cmd = path.join("scripts",referencePY);
+        console.log(cmd)
+        const pythonProcess = spawn('python',[path.join("./scripts",referencePY), newfile]);
         pythonProcess.stdout.on('data', (data) => {
             res.status(200).send(data);
         });
@@ -41,24 +81,6 @@ app.route("/api/:file").get((req, res) => {
         res.sendStatus(404);
     }
 });
-
-// app.route("/api/:file/:postfix").get((req, res) => {
-//     const newfile = req.params["file"];
-//     const postfix = "-"+req.params["postfix"]+".html";
-//     let exists = checkExists(outputFolder, cleanName(newfile), postfix);
-//     if (exists) {
-//         console.log(outputFolder + exists);
-//         res.sendFile(path.join(__dirname, outputFolder+exists));
-//     } else {
-//         res.sendStatus(404);
-//     }
-
-// })
-
-// function cleanName(filename) {
-//     name = filename.split(".");
-//     return name.slice(0,name.length - 1).join(".");
-// }
 
 function checkExists(folder, newfile, postfix) {
     let exists = null;
